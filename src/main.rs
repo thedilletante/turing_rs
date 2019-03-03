@@ -142,184 +142,204 @@ where T: Copy {
 }
 
 fn print_jointed<T> (cursor_iterator: impl Iterator<Item=Cursor<T>>)
-where T: Copy + Debug {
+where T: Copy + Debug + ToString {
   println!("{}",
            cursor_iterator
-             .map(|a| format!("{:?}", a.lookup()))
+             .map(|a| match a.lookup() {
+               None => "_".to_string(),
+               Some(a) => a.to_string()
+             })
              .collect::<Vec<String>>()
-             .join(", ")
+             .join(" ")
   );
 }
 
 
+#[derive(Debug)]
 enum Move {
   Stay,
   Left,
-  Right,
-  Halt
+  Right
 }
 
-#[derive(Hash, Eq, PartialEq)]
+#[derive(Hash, Eq, PartialEq, Debug)]
 struct Observed <Symbol, State> {
   symbol: Option<Symbol>,
   state: State
 }
 
-struct Action <Symbol, State> {
-  transition: State,
-  set: Option<Symbol>,
-  move_: Move
+#[derive(Debug)]
+enum Transition <State> {
+  State(State),
+  Halt
 }
 
-type Program <Symbol, State> = HashMap<Observed<Symbol, State>, Action<Symbol, State>>;
+#[derive(Debug)]
+struct Action <Symbol, State> {
+  set: Option<Symbol>,
+  movement: Move,
+  transition: Transition<State>
+}
 
-enum VirtualMachine <Symbol, State> {
-  Working(Program<Symbol, State>, State),
+type Program <Symbol, State> = HashMap<
+  Observed<Symbol, State>,
+  Action<Symbol, State>
+>;
+
+struct IdleVirtualMachine <State> {
+  state: State
+}
+
+enum VirtualMachine <State> {
+  Idle(IdleVirtualMachine<State>),
   Done
 }
 
-impl <Symbol, State> VirtualMachine <Symbol, State>
-where Symbol: Copy,
-      State: Copy,
-      Observed<Symbol, State>: Hash + Eq {
+impl <State> IdleVirtualMachine <State>
+where State: Copy {
 
-  fn new(initial: State) -> VirtualMachine <Symbol, State> {
-    VirtualMachine::Working(HashMap::new(), initial)
-  }
-
-  fn add(&mut self, observed: Observed<Symbol, State>, action: Action<Symbol, State>) {
-    match self {
-      VirtualMachine::Done => (),
-      VirtualMachine::Working(program, _) => {
-        program.insert(observed, action);
-      }
+  fn new(state: State) -> IdleVirtualMachine <State> {
+    IdleVirtualMachine {
+      state
     }
   }
 
-  fn apply(&mut self, cursor: &mut Cursor<Symbol>) {
+  fn apply<Symbol>(&self, cursor: Cursor<Symbol>, action: &Action<Symbol, State>) -> (VirtualMachine<State>, Cursor<Symbol>)
+  where Symbol: Copy,
+        Observed<Symbol, State>: Hash + Eq {
+    let mut new_cursor = cursor.clone();
+    new_cursor.set(action.set);
+    match action.movement {
+      Move::Left => {
+        new_cursor.move_left();
+      },
+      Move::Right => {
+        new_cursor.move_right();
+      },
+      _ => ()
+    };
 
-    match self {
-      VirtualMachine::Done => (),
-      VirtualMachine::Working(program, state) => {
-        let ref key = Observed {
-          symbol: cursor.lookup(),
-          state: *state
-        };
-        let action = program.get(key).unwrap();
-
-        *state = action.transition;
-        cursor.set(action.set);
-        match action.move_ {
-          Move::Halt => {
-            *self = VirtualMachine::Done;
-          },
-          Move::Left => {
-            cursor.move_left();
-          },
-          Move::Right => {
-            cursor.move_right();
-          },
-          Move::Stay => ()
-        }
-      }
+    match action.transition {
+      Transition::State(new_state) => (VirtualMachine::Idle(IdleVirtualMachine::new(new_state)), new_cursor),
+      Transition::Halt => (VirtualMachine::Done, new_cursor)
     }
   }
+}
 
+impl <State> VirtualMachine <State>
+where State: Copy {
+  fn new(initial: State) -> VirtualMachine <State> {
+    VirtualMachine::Idle(IdleVirtualMachine{
+      state: initial
+    })
+  }
+}
+
+
+fn build_simple_program() -> Program<char, char> {
+  let mut program = HashMap::new();
+
+  program.insert(Observed{
+    symbol: Some('a'),
+    state: 'a'
+  }, Action {
+    transition: Transition::State('b'),
+    set: Some('b'),
+    movement: Move::Left
+  });
+
+  program.insert(Observed{
+    symbol: Some('b'),
+    state: 'b'
+  }, Action {
+    transition: Transition::State('b'),
+    set: None,
+    movement: Move::Right
+  });
+
+  program.insert(Observed{
+    symbol: None,
+    state: 'b'
+  }, Action {
+    transition: Transition::Halt,
+    set: Some('a'),
+    movement: Move::Stay
+  });
+
+  program
 }
 
 fn simple_program() {
 
-  let mut machine = VirtualMachine::new('a');
-
-  machine.add(Observed{
-    symbol: Some(1),
-    state: 'a'
-  }, Action {
-    transition: 'b',
-    set: Some(2),
-    move_: Move::Left
-  });
-
-  machine.add(Observed{
-    symbol: Some(2),
-    state: 'a'
-  }, Action {
-    transition: 'b',
-    set: None,
-    move_: Move::Left
-  });
-
-  machine.add(Observed{
-    symbol: None,
-    state: 'b'
-  }, Action {
-    transition: 'a',
-    set: Some(4),
-    move_: Move::Right
-  });
-
+  let program = build_simple_program();
   let mut cursor = Cursor::on_new_empty_tape();
 
-  cursor.set(Some(1));
+  cursor.set(Some('a'));
   // print it from left to right
   print_jointed(
     cursor.clone()
       .rev().nth(2).unwrap().take(5)
   );
 
-  machine.apply(&mut cursor);
-  // print it from left to right
-  print_jointed(
-    cursor.clone()
-      .rev().nth(2).unwrap().take(5)
-  );
+  let mut machine = VirtualMachine::new('a');
 
-  machine.apply(&mut cursor);
-  // print it from left to right
-  print_jointed(
-    cursor.clone()
-      .rev().nth(2).unwrap().take(5)
-  );
+  while let VirtualMachine::Idle(idle) = machine {
 
-  machine.apply(&mut cursor);
-  // print it from left to right
-  print_jointed(
-    cursor.clone()
-      .rev().nth(2).unwrap().take(5)
-  );
+    let instruction = program.get(&Observed{
+      symbol: cursor.lookup(),
+      state: idle.state
+    }).unwrap();
+
+    println!("{:?}", instruction);
+
+    let (idle, new_cursor) = idle.apply(cursor.clone(), instruction);
+
+    // print it from left to right
+    print_jointed(
+      new_cursor.clone()
+        .rev().nth(2).unwrap().take(5)
+    );
+
+    machine = idle;
+    cursor = new_cursor;
+  }
 }
 
+//#[warn(dead_code)]
+//fn cursor_test() {
+//  let cursor = Cursor::on_new_empty_tape();
+//
+//  // fill the range
+//  cursor.clone()
+//    .take(5)
+//    .enumerate()
+//    .for_each(|(i,mut e)| e.set(Some(i)));
+//
+//  // make an empty cell in the middle
+//  cursor.clone()
+//    .nth(2).unwrap()
+//    .set(None);
+//
+//  // print it from left to right
+//  print_jointed(
+//    cursor.clone()
+//      .take(5)
+//  );
+//
+//  // print from right to left
+//  print_jointed(
+//    cursor.clone()
+//      // starting with 4th element (or 5th if you start counting with 1)
+//      .nth(4).unwrap()
+//      // reverse sequence
+//      .rev()
+//      // and print only 5 elements
+//      .take(5)
+//  );
+//}
 
 fn main() {
-  let cursor = Cursor::on_new_empty_tape();
 
-  // fill the range
-  cursor.clone()
-    .take(5)
-    .enumerate()
-    .for_each(|(i,mut e)| e.set(Some(i)));
-
-  // make an empty cell in the middle
-  cursor.clone()
-    .nth(2).unwrap()
-    .set(None);
-
-  // print it from left to right
-  print_jointed(
-    cursor.clone()
-      .take(5)
-  );
-
-  // print from right to left
-  print_jointed(
-    cursor.clone()
-      // starting with 4th element (or 5th if you start counting with 1)
-      .nth(4).unwrap()
-      // reverse sequence
-      .rev()
-      // and print only 5 elements
-      .take(5)
-  );
 
   simple_program();
 }
