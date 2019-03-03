@@ -204,24 +204,24 @@ where State: Copy {
     }
   }
 
-  fn apply<Symbol>(&self, cursor: Cursor<Symbol>, action: &Action<Symbol, State>) -> (VirtualMachine<State>, Cursor<Symbol>)
+  fn apply<Symbol>(&self, cursor: &mut Cursor<Symbol>, action: &Action<Symbol, State>) -> VirtualMachine<State>
   where Symbol: Copy,
         Observed<Symbol, State>: Hash + Eq {
-    let mut new_cursor = cursor.clone();
-    new_cursor.set(action.set);
+
+    cursor.set(action.set);
     match action.movement {
       Move::Left => {
-        new_cursor.move_left();
+        cursor.move_left();
       },
       Move::Right => {
-        new_cursor.move_right();
+        cursor.move_right();
       },
       _ => ()
     };
 
     match action.transition {
-      Transition::State(new_state) => (VirtualMachine::Idle(IdleVirtualMachine::new(new_state)), new_cursor),
-      Transition::Halt => (VirtualMachine::Done, new_cursor)
+      Transition::State(new_state) => VirtualMachine::Idle(IdleVirtualMachine::new(new_state)),
+      Transition::Halt => VirtualMachine::Done
     }
   }
 }
@@ -290,18 +290,13 @@ fn simple_program() {
       state: idle.state
     }).unwrap();
 
-    println!("{:?}", instruction);
-
-    let (idle, new_cursor) = idle.apply(cursor.clone(), instruction);
+    machine = idle.apply(&mut cursor, instruction);
 
     // print it from left to right
     print_jointed(
-      new_cursor.clone()
+      cursor.clone()
         .rev().nth(2).unwrap().take(5)
     );
-
-    machine = idle;
-    cursor = new_cursor;
   }
 }
 
