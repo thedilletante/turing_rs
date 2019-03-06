@@ -46,26 +46,21 @@ fn build_simple_program() -> Program<char, char> {
   program
 }
 
-fn simple_program() {
-
+fn main() {
   let program = build_simple_program();
+
   let mut tape = turing::Tape::new();
   let mut vm = turing::VirtualMachine::new('a');
+  let mut head = 0;
 
-  tape.set(0, Some('a'));
-
-  let head = 0;
-  // print it from left to right
+  tape.set(head, Some('a'));
   print_jointed(tape.iter_with(head - 2).take(5));
 
   while let turing::VirtualMachine::Idle(state) = vm {
-    let (new_vm, head) = turing::execute(&vm, program.get(&(tape.value(head), state)).unwrap(), &mut tape, head);
+    let action = program.get(&(tape.value(head), state)).unwrap();
+    let (new_vm, new_head) = turing::execute(turing::VirtualMachine::Idle(state), action, &mut tape, head);
     vm = new_vm;
-
+    head = new_head;
     print_jointed(tape.iter_with(head - 2).take(5));
   }
-}
-
-fn main() {
-  simple_program();
 }

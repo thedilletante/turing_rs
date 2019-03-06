@@ -50,6 +50,7 @@ pub struct Action <T, S> {
   pub transition: Transition<S>
 }
 
+#[derive(Debug)]
 pub enum VirtualMachine <S> {
   Idle(S),
   Done
@@ -64,7 +65,7 @@ where S: Copy {
 
 }
 
-pub fn execute <T, S> (vm: &VirtualMachine<S>, action: &Action<T, S>, tape: &mut Tape<T>, head: i64)
+pub fn execute <T, S> (vm: VirtualMachine<S>, action: &Action<T, S>, tape: &mut Tape<T>, head: i64)
   -> (VirtualMachine<S>, i64)
 where T: Copy,
       S: Copy {
