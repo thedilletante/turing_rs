@@ -10,6 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="83634c5a-416f-4ba2-a92c-81e5168b3369" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/turing.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -21,15 +23,22 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main.rs">
+        <entry file="file://$PROJECT_DIR$/src/turing.rs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-553">
-              <caret line="285" column="50" selection-start-line="285" selection-start-column="50" selection-end-line="285" selection-end-column="50" />
+            <state relative-caret-position="329">
+              <caret line="100" column="9" selection-start-line="100" selection-start-column="9" selection-end-line="100" selection-end-column="9" />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Rust File" />
+      </list>
+    </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -43,6 +52,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/main.rs" />
+        <option value="$PROJECT_DIR$/src/turing.rs" />
       </list>
     </option>
   </component>
@@ -56,15 +66,39 @@
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="turing_rs" type="b2602c69:ProjectViewProjectNode" />
+              <item name="turing_rs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="turing_rs" type="b2602c69:ProjectViewProjectNode" />
+              <item name="turing_rs" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="org.rust.cargo.project.model.PROJECT_DISCOVERY" value="true" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="Run turing_rs" />
+    </option>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -78,7 +112,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Cargo Command.Run turing_rs">
     <configuration name="Run turing_rs" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
       <option name="channel" value="DEFAULT" />
       <option name="command" value="run --package turing_rs --bin turing_rs" />
@@ -89,9 +123,20 @@
       <envs />
       <method v="2" />
     </configuration>
+    <configuration name="Test turing" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="channel" value="DEFAULT" />
+      <option name="command" value="test --package turing_rs --bin turing_rs turing" />
+      <option name="allFeatures" value="false" />
+      <option name="nocapture" value="false" />
+      <option name="backtrace" value="SHORT" />
+      <option name="workingDirectory" value="file://$PROJECT_DIR$" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Cargo Command.Run turing_rs" />
+        <item itemvalue="Cargo Command.Test turing" />
       </list>
     </recent_temporary>
   </component>
@@ -111,17 +156,59 @@
       <workItem from="1551452737437" duration="417000" />
       <workItem from="1551466245797" duration="4117000" />
       <workItem from="1551522765548" duration="6507000" />
+      <workItem from="1551611191313" duration="1187000" />
+      <workItem from="1551898144853" duration="4353000" />
     </task>
+    <task id="LOCAL-00001" summary="Made IdleVirtualMachine::apply() easier mutating cursor">
+      <created>1551611707980</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1551611707981</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
+  <component name="TestHistory">
+    <history-entry file="Test_turing - 2019.03.06 at 22h 24m 59s.xml">
+      <configuration name="Test turing" configurationId="CargoCommandRunConfiguration" />
+    </history-entry>
+    <history-entry file="Test_turing - 2019.03.06 at 22h 25m 15s.xml">
+      <configuration name="Test turing" configurationId="CargoCommandRunConfiguration" />
+    </history-entry>
+    <history-entry file="Test_turing - 2019.03.06 at 22h 26m 47s.xml">
+      <configuration name="Test turing" configurationId="CargoCommandRunConfiguration" />
+    </history-entry>
+    <history-entry file="Test_turing - 2019.03.06 at 22h 27m 05s.xml">
+      <configuration name="Test turing" configurationId="CargoCommandRunConfiguration" />
+    </history-entry>
+    <history-entry file="Test_turing - 2019.03.06 at 22h 27m 24s.xml">
+      <configuration name="Test turing" configurationId="CargoCommandRunConfiguration" />
+    </history-entry>
+    <history-entry file="Test_turing - 2019.03.06 at 22h 28m 06s.xml">
+      <configuration name="Test turing" configurationId="CargoCommandRunConfiguration" />
+    </history-entry>
+    <history-entry file="Test_turing - 2019.03.06 at 22h 28m 46s.xml">
+      <configuration name="Test turing" configurationId="CargoCommandRunConfiguration" />
+    </history-entry>
+    <history-entry file="Test_turing - 2019.03.06 at 22h 29m 01s.xml">
+      <configuration name="Test turing" configurationId="CargoCommandRunConfiguration" />
+    </history-entry>
+    <history-entry file="Test_turing - 2019.03.06 at 22h 29m 27s.xml">
+      <configuration name="Test turing" configurationId="CargoCommandRunConfiguration" />
+    </history-entry>
+    <history-entry file="Test_turing - 2019.03.06 at 22h 54m 07s.xml">
+      <configuration name="Test turing" configurationId="CargoCommandRunConfiguration" />
+    </history-entry>
+  </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20505000" />
+    <option name="totallyTimeSpent" value="26045000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-37" width="1920" height="1117" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -134,12 +221,12 @@
       <window_info anchor="bottom" id="Docker" order="7" weight="0.32962963" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" />
+      <window_info anchor="bottom" id="Terminal" order="10" weight="0.32962963" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Cargo" order="3" />
+      <window_info anchor="right" id="Cargo" order="3" weight="0.3296875" />
       <window_info anchor="right" id="Database" order="4" />
     </layout>
     <layout-to-restore>
@@ -168,16 +255,9 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/main.rs</url>
-          <line>340</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Made IdleVirtualMachine::apply() easier mutating cursor" />
+    <option name="LAST_COMMIT_MESSAGE" value="Made IdleVirtualMachine::apply() easier mutating cursor" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src/libcore/cell.rs">
@@ -216,26 +296,29 @@
     </entry>
     <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src/libstd/collections/hash/map.rs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="429">
-          <caret line="1299" column="17" selection-start-line="1299" selection-start-column="17" selection-end-line="1299" selection-end-column="17" />
+        <state relative-caret-position="249">
+          <caret line="1395" column="11" selection-start-line="1395" selection-start-column="11" selection-end-line="1395" selection-end-column="11" />
         </state>
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src/libcore/convert.rs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="249">
-          <caret line="439" column="7" selection-start-line="439" selection-start-column="7" selection-end-line="439" selection-end-column="7" />
-          <folding>
-            <element signature="e#13997#13998#0" expanded="true" />
-            <element signature="e#14025#14026#0" expanded="true" />
-          </folding>
+          <caret line="439" column="5" selection-start-line="439" selection-start-column="5" selection-end-line="439" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main.rs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-553">
-          <caret line="285" column="50" selection-start-line="285" selection-start-column="50" selection-end-line="285" selection-end-column="50" />
+        <state relative-caret-position="287">
+          <caret line="72" column="6" selection-start-line="72" selection-start-column="6" selection-end-line="72" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/turing.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="329">
+          <caret line="100" column="9" selection-start-line="100" selection-start-column="9" selection-end-line="100" selection-end-column="9" />
         </state>
       </provider>
     </entry>
