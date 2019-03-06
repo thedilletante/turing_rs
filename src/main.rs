@@ -17,43 +17,27 @@ where T: Copy + Debug + ToString {
   );
 }
 
-
-#[derive(Hash, Eq, PartialEq, Debug)]
-struct Observed <Symbol, State> {
-  symbol: Option<Symbol>,
-  state: State
-}
-
 type Program <Symbol, State> = HashMap<
-  Observed<Symbol, State>,
+  (Option<Symbol>, State),
   turing::Action<Symbol, State>
 >;
 
 fn build_simple_program() -> Program<char, char> {
   let mut program = HashMap::new();
 
-  program.insert(Observed{
-    symbol: Some('a'),
-    state: 'a'
-  }, turing::Action {
+  program.insert((Some('a'),'a'), turing::Action {
     transition: turing::Transition::State('b'),
     set: Some('b'),
     movement: turing::Movement::Left
   });
 
-  program.insert(Observed{
-    symbol: Some('b'),
-    state: 'b'
-  }, turing::Action {
+  program.insert((Some('b'), 'b'), turing::Action {
     transition: turing::Transition::State('b'),
     set: None,
     movement: turing::Movement::Right
   });
 
-  program.insert(Observed{
-    symbol: None,
-    state: 'b'
-  }, turing::Action {
+  program.insert((None,'b'), turing::Action {
     transition: turing::Transition::Halt,
     set: Some('a'),
     movement: turing::Movement::Stay
@@ -73,14 +57,9 @@ fn simple_program() {
   let head = 0;
   // print it from left to right
   print_jointed(tape.iter_with(head - 2).take(5));
+
   while let turing::VirtualMachine::Idle(state) = vm {
-
-    let action = program.get(&Observed{
-      symbol: tape.value(head),
-      state
-    }).unwrap();
-
-    let (new_vm, head) = turing::execute(&vm, action, &mut tape, head);
+    let (new_vm, head) = turing::execute(&vm, program.get(&(tape.value(head), state)).unwrap(), &mut tape, head);
     vm = new_vm;
 
     print_jointed(tape.iter_with(head - 2).take(5));
