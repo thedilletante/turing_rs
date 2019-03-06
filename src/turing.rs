@@ -74,8 +74,8 @@ where T: Copy,
       tape.set(head, action.set);
 
       let new_head = match action.movement {
-        Movement::Left => head + 1,
-        Movement::Right => head - 1,
+        Movement::Left => head - 1,
+        Movement::Right => head + 1,
         Movement::Stay => head
       };
 

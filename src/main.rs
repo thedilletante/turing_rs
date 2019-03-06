@@ -83,7 +83,6 @@ fn simple_program() {
     let (new_vm, head) = turing::execute(&vm, action, &mut tape, head);
     vm = new_vm;
 
-    // print it from left to right
     print_jointed(tape.iter_with(head - 2).take(5));
   }
 }
